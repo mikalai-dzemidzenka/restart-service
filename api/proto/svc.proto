@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option go_package = "github.com/renort/restart-service/api/proto/pb";
+
+package restart.service;
+
+import "google/api/annotations.proto";
+
+service RestartService {
+  rpc SendMessage(stream Message) returns (stream Message) {
+    option(google.api.http) = {
+      post: "/hello"
+      body: "*"
+    };	
+  }
+}
+
+message Message {
+  string body = 1;
+}
