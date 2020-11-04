@@ -24,5 +24,4 @@ func main() {
 	}
 	defer conn.Close()
 	client := pb.NewRestartServiceClient(conn)
-	client.
 }

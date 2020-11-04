@@ -29,6 +29,10 @@ func (*server) SendMessage(stream pb.RestartService_SendMessageServer) error {
 			return nil
 		}
 		fmt.Printf("Server.SendMessage: %v\n", in)
+		pb.s
+		if err = stream.Send(pb.Message{Body: "A"}); err != nil {
+			return nil
+		}
 	}
 }
 
