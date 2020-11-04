@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  svc:
+    build:
+      context: .
+      dockerfile: deployments/svc/Dockerfile
+    environment:
+      - GRPC_ADDRESS=${GRPC_ADDRESS} 
+      - GRPC_PORT=${GRPC_PORT}
+    networks:
+      - restartnet
+    depends_on:
+      - gw
+  gw:
+    container_name: ${GRPC_ADDRESS}
+    build:
+      context: .
+      dockerfile: deployments/gw/Dockerfile
+    ports:
+      - "${GW_PORT}:${GW_PORT}"
+      - "${GRPC_PORT}"
+    environment: 
+      - GRPC_PORT=${GRPC_PORT}
+      - GW_PORT=${GW_PORT}
+    networks:
+      - restartnet
+networks:
+  restartnet:
+    
+
