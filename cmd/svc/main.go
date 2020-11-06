@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"io"
 	"log"
 	"os"
@@ -51,5 +50,5 @@ func main() {
 	}
 	stream.CloseSend()
 	<-waitc
-	fmt.Println("Shutting down...")
+	log.Fatalln("Crashing...")
 }

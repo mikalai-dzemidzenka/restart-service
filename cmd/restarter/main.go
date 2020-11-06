@@ -29,7 +29,7 @@ func main() {
 		case <-sig:
 			break
 		default:
-			if proc, err := Start("./svc"); err == nil {
+			if proc, err := Start(os.Args[1:]...); err == nil {
 				proc.Wait()
 			}
 		}
