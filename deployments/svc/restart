@@ -2,17 +2,12 @@
 
 command="/bin/svc"
 supervisor="supervise-daemon"
-supervise_daemon_args="--stdout /dev/fd/1"
-extra_started_commands="reload"
+supervise_daemon_args="--respawn-max 0 --verbose"
+output_log="/var/log/restart.log"
+error_log=${output_log}
 
 depend() {
+    use logger
     need net
     need localmount
 }
-
-reload() {
-       ebegin "Reloading svc-daemon"
-       ${command}
-       eend $?
-}
-

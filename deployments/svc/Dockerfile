@@ -1,9 +1,11 @@
 FROM golang:latest AS builder
 WORKDIR /app
 ADD . .
+ENV GO111MODULE=on
+RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o svc ./cmd/svc/main.go
 
-FROM alpine:3.11
+FROM alpine:latest
 LABEL maintainer="danesh@riseup.net" \
     org.label-schema.name="alpine" \
     org.label-schema.vendor="Dockage" \
@@ -37,12 +39,9 @@ RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' >> /etc/apk/repo
     # Can't do cgroups
     && sed -i 's/\tcgroup_add_service/\t#cgroup_add_service/g' /lib/rc/sh/openrc-run.sh \
     && sed -i 's/VSERVER/DOCKER/Ig' /lib/rc/sh/init.sh
-
 COPY --from=builder /app/svc /bin/svc
 COPY --from=builder /app/deployments/svc/restart /etc/init.d/
-#COPY --from=builder /app/deployments/svc/restarter.sh /bin/
 RUN chmod +x /etc/init.d/restart
-#RUN chmod +x /bin/restarter.sh
 RUN openrc -n
 RUN rc-update add restart default
 
