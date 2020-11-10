@@ -10,8 +10,7 @@ ExecStart=/usr/local/bin/svc
 Restart=always
 StartLimitIntervalSec=0
 StartLimitBurst=0
-Environment=GRPC_ADDRESS=gw
-Environment=GRPC_PORT=50051
+EnvironmentFile=/etc/restart-environment
 
 [Install]
 WantedBy=multi-user.target

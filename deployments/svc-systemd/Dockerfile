@@ -16,12 +16,11 @@ rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
 rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
 rm -f /lib/systemd/system/basic.target.wants/*;\
 rm -f /lib/systemd/system/anaconda.target.wants/*;
+ADD ./.env /etc/restart-environment
 COPY --from=builder /app/svc /usr/local/bin/
-COPY --from=builder /app/deployments/svc-systemd/restart.service /etc/systemd/system/
+ADD ./deployments/svc-systemd/restart.service /etc/systemd/system/
 RUN systemctl enable restart.service
 STOPSIGNAL SIGRTMIN+3
-ENV GRPC_ADDRESS=gw
-ENV GRPC_PORT=50051
 VOLUME [ "/sys/fs/cgroup" ]
 CMD [ "/sbin/init" ]
 
